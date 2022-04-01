@@ -7,7 +7,7 @@ export const Todos: React.FC<TodosProps> = (props) => {
 
   const service = getService();
   const handleCompletedChange = async (todoId: string, completed: boolean) => {
-    const todo = props.todos && props.todos.find((todo) => todo.ID === todoId);
+    const todo = props.todos?.find((todo) => todo.ID === todoId);
     if (todo) {
       try {
         await service.saveTodo(
