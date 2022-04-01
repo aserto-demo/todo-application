@@ -40,8 +40,7 @@ export const Todos: React.FC<TodosProps> = (props) => {
   return (
     <div>
       {props.showCompleted &&
-        props.todos &&
-        props.todos
+        props.todos?
           .filter((todo) => todo.Completed)
           .map((todo) => {
             return (
