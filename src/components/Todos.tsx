@@ -53,8 +53,7 @@ export const Todos: React.FC<TodosProps> = (props) => {
             );
           })}
       {props.showActive &&
-        props.todos &&
-         props.todos
+         props.todos?
           .filter((todo) => !todo.Completed)
           .map((todo) => {
             return (
