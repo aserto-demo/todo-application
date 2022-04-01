@@ -56,7 +56,7 @@ export const Todo: React.FC<TodoProps> = (todoProps) => {
               src={user.picture}
             />
           ) : (
-            ""
+            null
           )}
         </label>
         <button
