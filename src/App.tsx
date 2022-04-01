@@ -113,7 +113,7 @@ export const App: React.FC<AppProps> = (props) => {
         <footer className="footer">
           <span className="todo-count">
             <strong>
-              {todos ? todos.filter((todo) => !todo.Completed).length : 0}
+              {todos?.filter((todo) => !todo.Completed).length ?? 0}
             </strong>{" "}
             item left
           </span>
