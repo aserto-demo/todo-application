@@ -4,7 +4,6 @@ import { TodosProps, TodoModel } from "../interfaces";
 import { getService } from "../service";
 
 export const Todos: React.FC<TodosProps> = (props) => {
-
   const service = getService();
   const handleCompletedChange = async (todoId: string, completed: boolean) => {
     const todo = props.todos?.find((todo) => todo.ID === todoId);
@@ -38,10 +37,10 @@ export const Todos: React.FC<TodosProps> = (props) => {
   };
 
   return (
-    <div>
+    <>
       {props.showCompleted &&
-        props.todos?
-          .filter((todo) => todo.Completed)
+        props.todos
+          ?.filter((todo) => todo.Completed)
           .map((todo) => {
             return (
               <Todo
@@ -53,8 +52,8 @@ export const Todos: React.FC<TodosProps> = (props) => {
             );
           })}
       {props.showActive &&
-         props.todos?
-          .filter((todo) => !todo.Completed)
+        props.todos
+          ?.filter((todo) => !todo.Completed)
           .map((todo) => {
             return (
               <Todo
@@ -65,6 +64,6 @@ export const Todos: React.FC<TodosProps> = (props) => {
               />
             );
           })}
-    </div>
+    </>
   );
 };

@@ -3,21 +3,21 @@ import { TodoProps, UserModel } from "../interfaces";
 import { getService } from "../service";
 
 export const Todo: React.FC<TodoProps> = (todoProps) => {
-  const [user, setUser] = useState<UserModel | void>();
+  const [user, setUser] = useState<UserModel>();
   const service = getService();
   useEffect(() => {
     const getUser = async () => {
-      let userRes: UserModel | void;
-
       try {
-        userRes = await service.getUser(todoProps.todo.UserSub)
+        const userRes: UserModel = await service.getUser(
+          todoProps.todo.UserSub
+        );
         setUser(userRes);
-      } catch(e){
+      } catch (e) {
         console.error(e);
       }
     };
     getUser();
-  }, []);
+  }, [service, todoProps.todo.UserSub]);
 
   return (
     <li className={todoProps.todo.Completed ? "completed" : ""}>
@@ -55,9 +55,7 @@ export const Todo: React.FC<TodoProps> = (todoProps) => {
               }}
               src={user.picture}
             />
-          ) : (
-            null
-          )}
+          ) : null}
         </label>
         <button
           className="destroy"

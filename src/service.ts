@@ -7,13 +7,13 @@ export class TodoService {
   constructor(token: string) {
     var headers = new Headers();
 
-    headers.append("Authorization",`Bearer ${token}`);
+    headers.append("Authorization", `Bearer ${token}`);
     headers.append("Content-Type", "application/json");
 
     this.headers = headers;
   }
 
-  listTodos: () => Promise<void | TodoModel[]> = async () => {
+  listTodos: () => Promise<TodoModel[]> = async () => {
     const response = await fetch(`${process.env.REACT_APP_API_ORIGIN}/todos`, {
       headers: this.headers,
     });
@@ -25,22 +25,20 @@ export class TodoService {
     }
   };
 
-  saveTodo: (
-    todo: TodoModel,
-    isUpdate?: boolean
-  ) => Promise<TodoModel[] | void> = async (todo, isUpdate = false) => {
-    const response = await fetch(`${process.env.REACT_APP_API_ORIGIN}/todo`, {
-      method: isUpdate ? "PUT" : "POST",
-      headers: this.headers,
-      body: JSON.stringify(todo),
-    });
+  saveTodo: (todo: TodoModel, isUpdate?: boolean) => Promise<TodoModel[]> =
+    async (todo, isUpdate = false) => {
+      const response = await fetch(`${process.env.REACT_APP_API_ORIGIN}/todo`, {
+        method: isUpdate ? "PUT" : "POST",
+        headers: this.headers,
+        body: JSON.stringify(todo),
+      });
 
-    if (response.status === 200) {
-      return await response.json();
-    } else {
-      throw new Error(`${response.status}: ${response.statusText}`);
-    }
-  };
+      if (response.status === 200) {
+        return await response.json();
+      } else {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+    };
 
   deleteTodo: (todo: TodoModel) => Promise<void | Response> = async (todo) => {
     const response: Response = await fetch(
@@ -58,7 +56,7 @@ export class TodoService {
     }
   };
 
-  getUser: (sub: string) => Promise<void | UserModel> = async (sub) => {
+  getUser: (sub: string) => Promise<UserModel> = async (sub) => {
     const response = await fetch(
       `${process.env.REACT_APP_API_ORIGIN}/user/${sub}`,
       {
@@ -77,7 +75,9 @@ export class TodoService {
 
 let todoService: TodoService;
 
-export const initializeService: (userEmail: string) => TodoService = (userEmail) => {
+export const initializeService: (userEmail: string) => TodoService = (
+  userEmail
+) => {
   todoService = new TodoService(userEmail);
   return todoService;
 };

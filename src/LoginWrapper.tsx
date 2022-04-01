@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "oidc-react";
 import { App } from "./App";
-import {AuthUser} from './interfaces'
 
 export function LoginWrapper() {
   const auth = useAuth();
@@ -14,12 +13,11 @@ export function LoginWrapper() {
     } else {
       setLoggedIn(true);
     }
-  });
+  }, [auth, isAuthenticated]);
 
-
-  const { userData } = auth
+  const { userData } = auth;
   //Only load the app if the user is logged in, and user data is available
-  if (loggedIn && userData && userData.profile.email){
+  if (loggedIn && userData && userData.profile.email) {
     return (
       <App
         user={{
@@ -32,8 +30,6 @@ export function LoginWrapper() {
       ></App>
     );
   } else {
-    return null
+    return null;
   }
-
-
 }

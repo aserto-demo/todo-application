@@ -58,7 +58,7 @@ export const App: React.FC<AppProps> = (props) => {
 
   const refreshTodos = useCallback(() => {
     const getTodos = async () => {
-      const todos: TodoModel[] | void = await service.listTodos();
+      const todos: TodoModel[] = await service.listTodos();
       setTodos(todos);
     };
 
@@ -79,7 +79,7 @@ export const App: React.FC<AppProps> = (props) => {
     if (todos && todos.length === 0) {
       refreshTodos();
     }
-  }, []);
+  }, [todos, refreshTodos]);
 
   return (
     <div className="App">
