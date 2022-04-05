@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Todo } from "./Todo";
-import { TodosProps, TodoModel } from "../interfaces";
+import { ITodosProps, ITodo } from "../interfaces";
 import { getService } from "../service";
 
-export const Todos: React.FC<TodosProps> = (props) => {
+export const Todos: React.FC<ITodosProps> = (props) => {
   const service = getService();
   const handleCompletedChange = async (todoId: string, completed: boolean) => {
     const todo = props.todos?.find((todo) => todo.ID === todoId);
@@ -26,7 +26,7 @@ export const Todos: React.FC<TodosProps> = (props) => {
     props.refreshTodos();
   };
 
-  const handleDeleteChange = async (todo: TodoModel) => {
+  const handleDeleteChange = async (todo: ITodo) => {
     try {
       await service.deleteTodo(todo);
     } catch (e) {

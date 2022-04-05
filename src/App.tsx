@@ -2,19 +2,19 @@ import React, { useState, useEffect, useCallback } from "react";
 import { v4 as uuid } from "uuid";
 import { useAuth } from "oidc-react";
 import { Todos } from "./components/Todos";
-import { TodoModel } from "./interfaces";
-import { initializeService } from "./service";
+import { ITodo } from "./interfaces";
+
 import { ToastContainer, toast } from "react-toastify";
-import { AppProps } from "./interfaces";
+import { IAppProps } from "./interfaces";
 import "react-toastify/dist/ReactToastify.css";
 import "todomvc-app-css/index.css";
 
-export const App: React.FC<AppProps> = (props) => {
+export const App: React.FC<IAppProps> = (props) => {
   const auth = useAuth();
   const userEmail = props.user.profile.email;
   const userSub = props.user.profile.sub;
-  const service = initializeService(props.user.id_token);
-  const [todos, setTodos] = useState<TodoModel[] | void>([]);
+  const service = props.service;
+  const [todos, setTodos] = useState<ITodo[] | void>([]);
   const [todoTitle, setTodoTitle] = useState<string>("");
   const [showCompleted, setShowCompleted] = useState<boolean>(true);
   const [showActive, setShowActive] = useState<boolean>(true);
@@ -46,8 +46,8 @@ export const App: React.FC<AppProps> = (props) => {
         ID: uuid(),
         Title: todoTitle,
         UserEmail: userEmail,
-        Completed: false,
         UserSub: userSub,
+        Completed: false,
       });
     } catch (e) {
       console.error(e);
@@ -58,7 +58,7 @@ export const App: React.FC<AppProps> = (props) => {
 
   const refreshTodos = useCallback(() => {
     const getTodos = async () => {
-      const todos: TodoModel[] = await service.listTodos();
+      const todos: ITodo[] = await service.listTodos();
       setTodos(todos);
     };
 

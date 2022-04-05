@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { TodoProps, UserModel } from "../interfaces";
+import { ITodoProps, IUser } from "../interfaces";
 import { getService } from "../service";
 
-export const Todo: React.FC<TodoProps> = (todoProps) => {
-  const [user, setUser] = useState<UserModel>();
+export const Todo: React.FC<ITodoProps> = (todoProps) => {
+  const [user, setUser] = useState<IUser>();
   const service = getService();
   useEffect(() => {
     const getUser = async () => {
       try {
-        const userRes: UserModel = await service.getUser(
-          todoProps.todo.UserSub
-        );
+        const userRes: IUser = await service.getUser(todoProps.todo.UserSub);
         setUser(userRes);
       } catch (e) {
         console.error(e);
