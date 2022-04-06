@@ -13,8 +13,6 @@ export interface IUser {
 }
 
 export interface ITodoService {
-  headers: Headers;
-  usersCache: { [key: string]: IUser };
   listTodos: () => Promise<ITodo[]>;
   saveTodo: (todo: ITodo, isUpdate?: boolean) => Promise<ITodo[]>;
   deleteTodo: (todo: ITodo) => Promise<void | Response>;
@@ -35,18 +33,11 @@ export interface ITodosProps {
   errorHandler(errorText: string): void;
 }
 
-export interface ITodoState {}
-
 export interface IAppProps {
   user: IAuthUser;
 }
 
 export interface IAuthUser {
-  id_token: string;
-  profile: IProfile;
-}
-
-export interface IProfile {
   email: string;
   sub: string;
 }

@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { ITodo, IUser } from "./interfaces";
+import { ITodo, ITodoService, IUser } from "./interfaces";
 
 const serviceContext = React.createContext({ token: "" });
 
-export const useTodoService = () => {
+export const useTodoService: () => ITodoService = () => {
   const { token } = useContext(serviceContext);
   const headers: Headers = new Headers();
 

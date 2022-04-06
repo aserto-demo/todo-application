@@ -4,15 +4,16 @@ import { useAuth } from "oidc-react";
 import { Todos } from "./components/Todos";
 import { ToastContainer, toast } from "react-toastify";
 import { IAppProps, ITodo } from "./interfaces";
+import { useTodoService } from "./todoService";
+
 import "react-toastify/dist/ReactToastify.css";
 import "todomvc-app-css/index.css";
-import { useTodoService } from "./todoService";
 
 export const App: React.FC<IAppProps> = (props) => {
   const auth = useAuth();
   const { saveTodo, listTodos } = useTodoService();
-  const userEmail = props.user.profile.email;
-  const userSub = props.user.profile.sub;
+  const userEmail = props.user.email;
+  const userSub = props.user.sub;
   const [todos, setTodos] = useState<ITodo[] | void>([]);
   const [todoTitle, setTodoTitle] = useState<string>("");
   const [showCompleted, setShowCompleted] = useState<boolean>(true);
@@ -55,7 +56,7 @@ export const App: React.FC<IAppProps> = (props) => {
     refreshTodos();
   };
 
-  const refreshTodos = useCallback(() => {
+  const refreshTodos: () => void = useCallback(() => {
     const getTodos = async () => {
       const todos: ITodo[] = await listTodos();
       setTodos(todos);
@@ -64,12 +65,12 @@ export const App: React.FC<IAppProps> = (props) => {
     getTodos();
   }, [listTodos]);
 
-  const enableShowCompleted = () => {
+  const enableShowCompleted: () => void = () => {
     setShowCompleted(true);
     setShowActive(false);
   };
 
-  const enableShowActive = () => {
+  const enableShowActive: () => void = () => {
     setShowActive(true);
     setShowCompleted(false);
   };
@@ -153,7 +154,7 @@ export const App: React.FC<IAppProps> = (props) => {
       <footer className="info">
         <div className="user-controls">
           <>
-            <div className="user-info">{props.user.profile?.email}</div>
+            <div className="user-info">{props.user?.email}</div>
             <div className="seperator"></div>
             <div className="auth-button">
               <div onClick={() => auth.signOut()}>Log Out</div>

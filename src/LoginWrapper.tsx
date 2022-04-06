@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "oidc-react";
 import { App } from "./App";
-
 import TodoService from "./todoService";
 
 export function LoginWrapper() {
   const auth = useAuth();
-  const isAuthenticated = auth.userData?.id_token ? true : false;
+  const { userData } = auth;
+  const isAuthenticated = userData?.id_token ? true : false;
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -17,18 +17,14 @@ export function LoginWrapper() {
     }
   }, [auth, isAuthenticated]);
 
-  const { userData } = auth;
   //Only load the app if the user is logged in, and user data is available
-  if (loggedIn && userData && userData.profile.email) {
+  if (loggedIn && userData?.profile.email) {
     return (
       <TodoService token={userData.id_token}>
         <App
           user={{
-            id_token: userData.id_token,
-            profile: {
-              email: userData.profile.email,
-              sub: userData.profile.sub,
-            },
+            email: userData.profile.email,
+            sub: userData.profile.sub,
           }}
         ></App>
       </TodoService>
