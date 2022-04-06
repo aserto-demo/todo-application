@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import { useAuth } from "oidc-react";
 import { Todos } from "./components/Todos";
 import { ToastContainer, toast } from "react-toastify";
-import { IAppProps, ITodo } from "./interfaces";
+import { IAppProps, ITodo, IUser } from "./interfaces";
 import { useTodoService } from "./todoService";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -11,7 +11,8 @@ import "todomvc-app-css/index.css";
 
 export const App: React.FC<IAppProps> = (props) => {
   const auth = useAuth();
-  const { saveTodo, listTodos } = useTodoService();
+  const { saveTodo, listTodos, getUser } = useTodoService();
+  const [user, setUser] = useState<IUser>();
   const userEmail = props.user.email;
   const userSub = props.user.sub;
   const [todos, setTodos] = useState<ITodo[] | void>([]);
@@ -75,10 +76,20 @@ export const App: React.FC<IAppProps> = (props) => {
   };
 
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userRes: IUser = await getUser(props.user.sub);
+        setUser(userRes);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchUser();
+
     if (todos && todos.length === 0) {
       refreshTodos();
     }
-  }, [todos, refreshTodos]);
+  }, [todos, refreshTodos, getUser, props.user.sub]);
 
   return (
     <div className="App">
@@ -153,7 +164,24 @@ export const App: React.FC<IAppProps> = (props) => {
       <footer className="info">
         <div className="user-controls">
           <>
-            <div className="user-info">{props.user?.email}</div>
+            <div className="user-info">
+              <span className="user-name">
+                Logged in as: <b>{props.user?.email}</b>
+              </span>
+              {user?.picture ? (
+                <span className="user-picture">
+                  <img
+                    alt="user"
+                    style={{
+                      borderRadius: "50%",
+                      width: 50,
+                      height: 50,
+                    }}
+                    src={user.picture}
+                  />
+                </span>
+              ) : null}
+            </div>
             <div className="seperator"></div>
             <div className="auth-button">
               <div onClick={() => auth.signOut()}>Log Out</div>
