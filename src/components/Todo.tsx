@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { ITodoProps, IUser } from "../interfaces";
-import { getService } from "../service";
+import { useTodoService } from "../todoService";
 
 export const Todo: React.FC<ITodoProps> = (todoProps) => {
   const [user, setUser] = useState<IUser>();
-  const service = getService();
+  const { getUser } = useTodoService();
+
   useEffect(() => {
-    const getUser = async () => {
+    const fetchUser = async () => {
       try {
-        const userRes: IUser = await service.getUser(todoProps.todo.UserSub);
+        const userRes: IUser = await getUser(todoProps.todo.UserSub);
         setUser(userRes);
       } catch (e) {
         console.error(e);
       }
     };
-    getUser();
-  }, [service, todoProps.todo.UserSub]);
+    fetchUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <li className={todoProps.todo.Completed ? "completed" : ""}>

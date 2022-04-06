@@ -39,7 +39,6 @@ export interface ITodoState {}
 
 export interface IAppProps {
   user: IAuthUser;
-  service: ITodoService;
 }
 
 export interface IAuthUser {

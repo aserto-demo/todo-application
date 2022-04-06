@@ -1,15 +1,15 @@
 import * as React from "react";
 import { Todo } from "./Todo";
 import { ITodosProps, ITodo } from "../interfaces";
-import { getService } from "../service";
-
+import { useTodoService } from "../todoService";
 export const Todos: React.FC<ITodosProps> = (props) => {
-  const service = getService();
+  const { saveTodo, deleteTodo } = useTodoService();
+
   const handleCompletedChange = async (todoId: string, completed: boolean) => {
     const todo = props.todos?.find((todo) => todo.ID === todoId);
     if (todo) {
       try {
-        await service.saveTodo(
+        await saveTodo(
           {
             ...todo,
             Completed: completed,
@@ -28,7 +28,7 @@ export const Todos: React.FC<ITodosProps> = (props) => {
 
   const handleDeleteChange = async (todo: ITodo) => {
     try {
-      await service.deleteTodo(todo);
+      await deleteTodo(todo);
     } catch (e) {
       e instanceof Error && props.errorHandler(e.message);
     }
