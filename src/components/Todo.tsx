@@ -9,7 +9,7 @@ export const Todo: React.FC<ITodoProps> = (todoProps) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userRes: IUser = await getUser(todoProps.todo.UserSub);
+        const userRes: IUser = await getUser(todoProps.todo.OwnerID);
         setUser(userRes);
       } catch (e) {
         console.error(e);

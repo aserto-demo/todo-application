@@ -45,8 +45,7 @@ export const App: React.FC<IAppProps> = (props) => {
       await saveTodo({
         ID: uuid(),
         Title: todoTitle,
-        UserEmail: userEmail,
-        UserSub: userSub,
+        OwnerID: userSub,
         Completed: false,
       });
     } catch (e) {

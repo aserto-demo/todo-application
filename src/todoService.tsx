@@ -57,9 +57,9 @@ export const useTodoService: () => ITodoService = () => {
     }
   };
 
-  const getUser: (sub: string) => Promise<IUser> = async (sub) => {
+  const getUser: (userId: string) => Promise<IUser> = async (userId) => {
     const response = await fetch(
-      `${process.env.REACT_APP_API_ORIGIN}/user/${sub}`,
+      `${process.env.REACT_APP_API_ORIGIN}/user/${userId}`,
       {
         method: "GET",
         headers: headers,
