@@ -50,7 +50,7 @@ export const App: React.FC<IAppProps> = (props) => {
         Completed: false,
       });
     } catch (e) {
-      console.error(e);
+      e instanceof Error && errorHandler(e.message);
     }
     setTodoTitle("");
     refreshTodos();
