@@ -20,6 +20,7 @@ code {
   align-items: center;
   margin-bottom: 10px;
   cursor: default;
+  margin-left: 20px;
 }
 
 .user-picture {
