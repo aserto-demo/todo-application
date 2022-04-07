@@ -26,7 +26,9 @@ export const useTodoService: () => ITodoService = () => {
     todo: ITodo,
     isUpdate?: boolean
   ) => Promise<ITodo[]> = async (todo, isUpdate = false) => {
-    const response = await fetch(`${process.env.REACT_APP_API_ORIGIN}/todo`, {
+    const baseUrl = `${process.env.REACT_APP_API_ORIGIN}/todo`
+    const url = isUpdate ? baseUrl + "/" + todo.OwnerID : baseUrl;
+    const response = await fetch(url, {
       method: isUpdate ? "PUT" : "POST",
       headers: headers,
       body: JSON.stringify(todo),
@@ -43,7 +45,7 @@ export const useTodoService: () => ITodoService = () => {
     todo
   ) => {
     const response: Response = await fetch(
-      `${process.env.REACT_APP_API_ORIGIN}/todo`,
+      `${process.env.REACT_APP_API_ORIGIN}/todo/${todo.OwnerID}`,
       {
         method: "DELETE",
         body: JSON.stringify(todo),
