@@ -86,10 +86,15 @@ export const App: React.FC<IAppProps> = (props) => {
     };
     fetchUser();
 
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (todos && todos.length === 0) {
       refreshTodos();
     }
-  }, [todos, refreshTodos, getUser, props.user.sub]);
+  }, [todos, refreshTodos]);
 
   return (
     <div className="App">
