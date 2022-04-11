@@ -90,10 +90,12 @@ export const App: React.FC<IAppProps> = (props) => {
   }, []);
 
   useEffect(() => {
-    if (todos && todos.length === 0) {
-      refreshTodos();
-    }
-  }, [todos, refreshTodos]);
+    // if (todos && todos.length === 0) {
+
+    // }
+    refreshTodos();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="App">
