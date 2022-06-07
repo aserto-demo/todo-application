@@ -4,6 +4,6 @@
 
 In the project directory, you can run:
 
+### `yarn`
 ### `yarn start`
 
-(this file will be updated)
