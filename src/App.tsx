@@ -1,21 +1,19 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { v4 as uuid } from "uuid";
 import { useAuth } from "oidc-react";
 import { Todos } from "./components/Todos";
 import { ToastContainer, toast } from "react-toastify";
-import { IAppProps, ITodo, IUser } from "./interfaces";
+import { AppProps, Todo, User } from "./interfaces";
 import { useTodoService } from "./todoService";
 
 import "react-toastify/dist/ReactToastify.css";
 import "todomvc-app-css/index.css";
 
-export const App: React.FC<IAppProps> = (props) => {
+export const App: React.FC<AppProps> = (props) => {
   const auth = useAuth();
-  const { saveTodo, listTodos, getUser } = useTodoService();
-  const [user, setUser] = useState<IUser>();
+  const { createTodo, listTodos, getUser } = useTodoService();
+  const [user, setUser] = useState<User>();
   const userEmail = props.user.email;
-  const userSub = props.user.sub;
-  const [todos, setTodos] = useState<ITodo[] | void>([]);
+  const [todos, setTodos] = useState<Todo[] | void>([]);
   const [todoTitle, setTodoTitle] = useState<string>("");
   const [showCompleted, setShowCompleted] = useState<boolean>(true);
   const [showActive, setShowActive] = useState<boolean>(true);
@@ -43,10 +41,8 @@ export const App: React.FC<IAppProps> = (props) => {
     }
 
     try {
-      await saveTodo({
-        ID: uuid(),
+      await createTodo({
         Title: todoTitle,
-        OwnerID: userSub,
         Completed: false,
       });
     } catch (e) {
@@ -58,7 +54,7 @@ export const App: React.FC<IAppProps> = (props) => {
 
   const refreshTodos: () => void = useCallback(() => {
     const getTodos = async () => {
-      const todos: ITodo[] = await listTodos();
+      const todos: Todo[] = await listTodos();
       setTodos(todos);
     };
 
@@ -78,7 +74,7 @@ export const App: React.FC<IAppProps> = (props) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userRes: IUser = await getUser(props.user.sub);
+        const userRes: User = await getUser(props.user.sub);
         setUser(userRes);
       } catch (e) {
         console.error(e);
@@ -94,7 +90,7 @@ export const App: React.FC<IAppProps> = (props) => {
 
     // }
     refreshTodos();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
