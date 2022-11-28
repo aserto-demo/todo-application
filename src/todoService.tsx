@@ -5,8 +5,8 @@ const serviceContext = React.createContext({ token: "" });
 
 const urls = {
   todos: `${process.env.REACT_APP_API_ORIGIN}/todos`,
-  todo: (id: string) => `${process.env.REACT_APP_API_ORIGIN}/todo/${id}`,
-  user: (id: string) => `${process.env.REACT_APP_API_ORIGIN}/user/${id}`,
+  todo: (id: string) => `${process.env.REACT_APP_API_ORIGIN}/todos/${id}`,
+  user: (id: string) => `${process.env.REACT_APP_API_ORIGIN}/users/${id}`,
 };
 
 export const useTodoService: () => ITodoService = () => {
