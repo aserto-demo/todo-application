@@ -1,23 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { TodoProps, User } from "../interfaces";
-import { useTodoService } from "../todoService";
+import { useUser } from "../todoService";
 
 export const Todo: React.FC<TodoProps> = (todoProps) => {
-  const [user, setUser] = useState<User>();
-  const { getUser } = useTodoService();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userRes: User = await getUser(todoProps.todo.OwnerID);
-        setUser(userRes);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    fetchUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const user: User = useUser(todoProps.todo.OwnerID);
 
   return (
     <li className={todoProps.todo.Completed ? "completed" : ""}>

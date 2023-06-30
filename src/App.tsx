@@ -3,20 +3,20 @@ import { useAuth } from "oidc-react";
 import { Todos } from "./components/Todos";
 import { ToastContainer, toast } from "react-toastify";
 import { AppProps, Todo, User } from "./interfaces";
-import { useTodoService } from "./todoService";
+import { useTodoService, useUser } from "./todoService";
 
 import "react-toastify/dist/ReactToastify.css";
 import "todomvc-app-css/index.css";
 
 export const App: React.FC<AppProps> = (props) => {
   const auth = useAuth();
-  const { createTodo, listTodos, getUser } = useTodoService();
-  const [user, setUser] = useState<User>();
+  const { createTodo, listTodos } = useTodoService();
   const userEmail = props.user.email;
   const [todos, setTodos] = useState<Todo[] | void>([]);
   const [todoTitle, setTodoTitle] = useState<string>("");
   const [showCompleted, setShowCompleted] = useState<boolean>(true);
   const [showActive, setShowActive] = useState<boolean>(true);
+  const user: User = useUser(props.user.sub);
 
   const errorHandler = (errorText: string) => {
     toast.error("Error: " + errorText, {
@@ -72,23 +72,6 @@ export const App: React.FC<AppProps> = (props) => {
   };
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userRes: User = await getUser(props.user.sub);
-        setUser(userRes);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    fetchUser();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    // if (todos && todos.length === 0) {
-
-    // }
     refreshTodos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

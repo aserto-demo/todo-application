@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "oidc-react";
 import { App } from "./App";
 import TodoService from "./todoService";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 export function LoginWrapper() {
   const auth = useAuth();
@@ -20,14 +23,16 @@ export function LoginWrapper() {
   //Only load the app if the user is logged in, and user data is available
   if (loggedIn && userData?.profile.email) {
     return (
-      <TodoService token={userData.id_token}>
-        <App
-          user={{
-            email: userData.profile.email,
-            sub: userData.profile.sub,
-          }}
-        ></App>
-      </TodoService>
+      <QueryClientProvider client={queryClient}>
+        <TodoService token={userData.id_token}>
+          <App
+            user={{
+              email: userData.profile.email,
+              sub: userData.profile.sub,
+            }}
+          ></App>
+        </TodoService>
+      </QueryClientProvider>
     );
   } else {
     return null;
