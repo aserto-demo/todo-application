@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Todo, TodoValues, ITodoService, User } from "./interfaces";
+import { useQuery } from "react-query";
 
 const serviceContext = React.createContext({ token: "" });
 
@@ -62,6 +63,14 @@ export const useTodoService: () => ITodoService = () => {
     deleteTodo,
     getUser,
   };
+};
+
+export const useUser: (userId: string) => User = (userId: string) => {
+  const { getUser } = useTodoService();
+  const response = useQuery(['User', userId], () => {
+    return getUser(userId);
+  });
+  return response.data as User;
 };
 
 const jsonOrError = async (response: Response): Promise<any> => {
