@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "oidc-react";
-import { Todos } from "./components/Todos";
+import React, { useCallback, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { Todos } from "./components/Todos";
 import { AppProps, Todo, User } from "./interfaces";
 import { useTodoService, useUser } from "./todoService";
 
@@ -37,6 +37,11 @@ export const App: React.FC<AppProps> = (props) => {
   const handleSubmit: () => void = async () => {
     if (userEmail === "" || typeof userEmail === "undefined") {
       errorHandler("No user email found.");
+      return;
+    }
+
+    if (todoTitle === "") {
+      errorHandler("No Todo item entered.");
       return;
     }
 
