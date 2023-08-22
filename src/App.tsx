@@ -51,7 +51,10 @@ export const App: React.FC<AppProps> = (props) => {
         Completed: false,
       });
     } catch (e) {
-      e instanceof Error && errorHandler(e.message);
+      if (e instanceof TypeError && e.message === "Failed to fetch") {
+        errorHandler("Failed to connect. Is todo service running locally?");
+      } else
+        e instanceof Error && errorHandler(e.message);
     }
     setTodoTitle("");
     refreshTodos();
