@@ -15,10 +15,8 @@ const ErrorWithLink: React.FC = () => (
       running.
     </p>
     <p>
-      <a href="https://docs.aserto.com" target="_blank" rel="noreferrer">
-        Refer to the docs to download and start a server in the language of your
-        choice.
-      </a>
+      <a href="https://github.com/aserto-demo/todo-application#backends" target="_blank" rel="noreferrer">
+        Refer to the docs to download and start a server in the language of your choice. </a>
     </p>
   </div>
 );
@@ -70,10 +68,11 @@ export const App: React.FC<AppProps> = (props) => {
     } catch (e) {
       if (e instanceof TypeError && e.message === "Failed to fetch") {
         errorHandler(
-          "Failed to connect. Is todo service running locally?",
+          "",
           false
         );
       } else e instanceof Error && errorHandler(e.message);
+      return;
     }
     setTodoTitle("");
     refreshTodos();
@@ -86,10 +85,7 @@ export const App: React.FC<AppProps> = (props) => {
         setTodos(todos);
       } catch (e) {
         if (e instanceof TypeError && e.message === "Failed to fetch") {
-          errorHandler(
-            "Failed to connect. Is todo service running locally?",
-            false
-          );
+          errorHandler("",false);
         } else e instanceof Error && errorHandler(e.message);
       }
     };
