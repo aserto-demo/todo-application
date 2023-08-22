@@ -8,6 +8,21 @@ import { useTodoService, useUser } from "./todoService";
 import "react-toastify/dist/ReactToastify.css";
 import "todomvc-app-css/index.css";
 
+const ErrorWithLink: React.FC = () => (
+  <div>
+    <p>
+      Error: failed to connect. This happens when the local server isn't
+      running.
+    </p>
+    <p>
+      <a href="https://docs.aserto.com" target="_blank" rel="noreferrer">
+        Refer to the docs to download and start a server in the language of your
+        choice.
+      </a>
+    </p>
+  </div>
+);
+
 export const App: React.FC<AppProps> = (props) => {
   const auth = useAuth();
   const { createTodo, listTodos } = useTodoService();
@@ -18,10 +33,12 @@ export const App: React.FC<AppProps> = (props) => {
   const [showActive, setShowActive] = useState<boolean>(true);
   const user: User = useUser(props.user.sub);
 
-  const errorHandler = (errorText: string) => {
-    toast.error("Error: " + errorText, {
+  const errorHandler = (errorText: string, close?: number | false) => {
+    const autoClose = close === undefined ? 3000 : close;
+    const msg = close === false ? ErrorWithLink : "Error: " + errorText;
+    toast.error(msg, {
       position: "top-center",
-      autoClose: 3000,
+      autoClose,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -52,9 +69,11 @@ export const App: React.FC<AppProps> = (props) => {
       });
     } catch (e) {
       if (e instanceof TypeError && e.message === "Failed to fetch") {
-        errorHandler("Failed to connect. Is todo service running locally?");
-      } else
-        e instanceof Error && errorHandler(e.message);
+        errorHandler(
+          "Failed to connect. Is todo service running locally?",
+          false
+        );
+      } else e instanceof Error && errorHandler(e.message);
     }
     setTodoTitle("");
     refreshTodos();
