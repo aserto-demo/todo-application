@@ -81,8 +81,17 @@ export const App: React.FC<AppProps> = (props) => {
 
   const refreshTodos: () => void = useCallback(() => {
     const getTodos = async () => {
-      const todos: Todo[] = await listTodos();
-      setTodos(todos);
+      try {
+        const todos: Todo[] = await listTodos();
+        setTodos(todos);
+      } catch (e) {
+        if (e instanceof TypeError && e.message === "Failed to fetch") {
+          errorHandler(
+            "Failed to connect. Is todo service running locally?",
+            false
+          );
+        } else e instanceof Error && errorHandler(e.message);
+      }
     };
 
     getTodos();
